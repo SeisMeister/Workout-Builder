@@ -11,6 +11,7 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
+    @Query private var workouts: [Workout]
 
     var body: some View {
         NavigationSplitView {
@@ -43,6 +44,14 @@ struct ContentView: View {
         withAnimation {
             let newItem = Item(timestamp: Date())
             modelContext.insert(newItem)
+        }
+    }
+    
+    private func addWorkout() {
+        // Work this function out, this ain't right
+        withAnimation {
+            let newWorkout = Workout(exercise: String(), sets: Int(), reps: Int())
+            modelContext.insert(newWorkout)
         }
     }
 
