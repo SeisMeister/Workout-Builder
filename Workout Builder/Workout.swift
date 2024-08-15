@@ -6,3 +6,10 @@
 //
 
 import Foundation
+import SwiftData
+
+@Model public class Workout {
+    var exercise: String
+    var sets: Int
+    var reps: Int
+}
