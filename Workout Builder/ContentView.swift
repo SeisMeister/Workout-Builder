@@ -12,15 +12,16 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     @Query private var workouts: [Workout]
+    @State private var isShowingWorkoutNameField = false
 
     var body: some View {
         NavigationSplitView {
             List {
-                ForEach(items) { item in
+                ForEach(workouts) { workout in
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        
                     } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -30,13 +31,15 @@ struct ContentView: View {
                     EditButton()
                 }
                 ToolbarItem {
-                    Button(action: addItem) {
+                    Button(action: addWorkout) {
                         Label("Add Item", systemImage: "plus")
                     }
                 }
             }
-        } detail: {
-            Text("Select an item")
+        }
+        .sheet(isPresented: $isShowingWorkoutNameField) {
+            AddEditWorkoutNameView()
+            // Left off here at 10:33 AM
         }
     }
 
