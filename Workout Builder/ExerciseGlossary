@@ -1,0 +1,9 @@
+
+{
+    "Squat": ["Goblet Squat", "Box Squat", "Split Squat"]
+    "Hinge": ["Deadlift", "Good-Morning", "Glute Bridge"]
+    "Push": ["Benchpress", "Deficit Push-Ups", "Military Press"],
+    "Pull": ["Bent-Over Row", "Lat Pulldowns", "Bicep Curls"],
+    "Carry": ["Farmer's Carry", "Suitcase Carry", "Overhead Carry"],
+    "Rotation": ["Cable Axe Chops", "Rotational Medicine Ball Throws", "Rotational LandMine Press"]
+}

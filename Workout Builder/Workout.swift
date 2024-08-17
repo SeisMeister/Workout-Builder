@@ -8,14 +8,8 @@
 import Foundation
 import SwiftData
 
-@Model public class Workout {
-    var exercise: String
-    var sets: Int
-    var reps: Int
+@Model public class Workout: Identifiable {
+    //    var exercise: [Exercise]
+// var name: NameofWorkout
     
-    init(exercise: String, sets: Int, reps: Int) {
-        self.exercise = exercise
-        self.sets = sets
-        self.reps = reps
-    }
 }
