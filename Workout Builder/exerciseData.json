@@ -1,0 +1,33 @@
+
+
+[
+    {
+        "name":"Squat",
+        "exercises": ["Goblet Squat", "Box Squat", "Split Squat"]
+    },
+    
+    {
+        "name":"Hinge",
+        "exercises": ["Deadlift", "Good-Morning", "Glute Bridge"]
+    },
+    
+    {
+        "name":"Push",
+        "exercises": ["Benchpress", "Deficit Push-Ups", "Military Press"]
+    },
+    
+    {
+        "name":"Pull",
+        "exercises": ["Bent-Over Row", "Lat Pulldowns", "Bicep Curls"]
+    },
+    
+    {
+        "name":"Carry",
+        "exercises": ["Farmer's Carry", "Suitcase Carry", "Overhead Carry"]
+    },
+    
+    {
+        "name":"Rotation",
+        "exercises": ["Cable Axe Chops", "Rotational Medicine Ball Throws", "Rotational LandMine Press"]
+    },
+]

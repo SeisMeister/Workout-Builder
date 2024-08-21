@@ -2,7 +2,7 @@
 //  Item.swift
 //  Workout Builder
 //
-//  Created by Cesar Fernandez on 8/15/24.
+//  Created by Cesar Fernandez on 8/21/24.
 //
 
 import Foundation

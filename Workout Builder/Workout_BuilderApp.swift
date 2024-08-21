@@ -23,10 +23,12 @@ struct Workout_BuilderApp: App {
         }
     }()
 
+    @StateObject var exerciseData = ExerciseData()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ExerciseList()
         }
-        .modelContainer(sharedModelContainer)
-    }
+        .environmentObject(exerciseData)
+   }
 }
