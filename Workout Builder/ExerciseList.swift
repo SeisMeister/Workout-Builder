@@ -26,3 +26,6 @@ struct ExerciseList: View {
     ExerciseList()
         .environmentObject(ExerciseData())
 }
+
+// Add save button at the top so user can save.
+// When workout is made then it is made into a copy

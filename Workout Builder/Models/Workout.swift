@@ -8,9 +8,9 @@
 import Foundation
 import SwiftData
 
-@Model public struct Workout {
+@Model public class Workout {
     var name: String
-    var exercises = [Exercise]()
+    @Relationship(deleteRule: .cascade) var exercises: [Exercise]
     
     public init(name: String, exercises: [Exercise]) {
         self.name = name

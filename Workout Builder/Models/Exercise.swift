@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-@Model public struct Exercise {
+@Model public class Exercise {
     var name: String
     var sets: Int
     var repetitions: Int
@@ -19,3 +19,4 @@ import SwiftData
         self.repetitions = repetitions
     }
 }
+

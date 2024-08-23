@@ -9,11 +9,27 @@ import SwiftUI
 
 struct StartPage: View {
     @State private var newWorkoutName = ""
-    @State private var newWorkout: [Workout] = []
+    @State private var workoutArray: [Workout] = []
     
     var body: some View {
-        List {
-            
+        NavigationStack {
+            List {
+                if !workoutArray.isEmpty {
+                    Section("Workouts") {
+                        ForEach(workoutArray, id: \.name) { workout in
+                            Text(workout.name)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Workouts")
+            .toolbar {
+                ToolbarItem {
+                    Button(action: addWorkout) {
+                        Label("Add new workout", systemImage:"plus")
+                    }
+                }
+            }
         }
     }
     
@@ -21,23 +37,25 @@ struct StartPage: View {
         guard newWorkoutName.isEmpty == false else { return }
         
         withAnimation {
-            let workout = Workout(name: newWorkoutName, exercises: <#T##[Exercise]#>)
-            newWorkout.append(workout)
+            let workout = Workout(name: newWorkoutName, exercises: [])
+            workoutArray.append(workout)
             newWorkoutName = ""
         }
     }
     
-    func addExercisesToWorkout() {
+    func addExercises(to workout: inout Workout) {
         guard newWorkoutName.isEmpty == false else { return }
+        let set = 0
+        let rep = 0
         
         withAnimation {
-            let exercise = Exercise(name: <#T##String#>, sets: <#T##Int#>, repetitions: <#T##Int#>)
-            newWorkout.exercises.append(workout)
+            let exercise = Exercise(name: newWorkoutName, sets: set, repetitions: rep)
+            workout.exercises.append(exercise)
             newWorkoutName = ""
         }
     }
 }
 
-//#Preview {
-//    StartPage()
-//}
+#Preview {
+    StartPage()
+}

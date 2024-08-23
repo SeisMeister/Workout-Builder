@@ -27,7 +27,8 @@ struct Workout_BuilderApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ExerciseList()
+            StartPage()
+//            ExerciseList()
         }
         .environmentObject(exerciseData)
    }
