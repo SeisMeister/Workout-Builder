@@ -9,9 +9,14 @@ import SwiftUI
 
 struct ExerciseList: View {
     @EnvironmentObject var exerciseData: ExerciseData
+    @State private var newWorkoutName = ""
     
     var body: some View {
         List {
+            HStack {
+                TextField("Workout Name", text: $newWorkoutName)
+//                Button("Save", action: $saveWorkout)
+            }
             ForEach(exerciseData.categories, id: \.name) { cat in
                 Section(cat.name) {
                     ForEach(cat.exercises, id: \.self) { exercise in
@@ -21,6 +26,10 @@ struct ExerciseList: View {
             }
         }
     }
+    
+//    func saveWorkout() {
+//        
+//    }
 }
 #Preview {
     ExerciseList()

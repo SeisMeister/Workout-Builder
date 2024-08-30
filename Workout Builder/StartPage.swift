@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct StartPage: View {
+    @State private var showExerciseList = false
     @State private var newWorkoutName = ""
     @State private var workoutArray: [Workout] = []
     
@@ -17,18 +18,23 @@ struct StartPage: View {
                 if !workoutArray.isEmpty {
                     Section("Workouts") {
                         ForEach(workoutArray, id: \.name) { workout in
-                            Text(workout.name)
+                                Text(workout.name)
                         }
                     }
                 }
             }
             .navigationTitle("Workouts")
             .toolbar {
-                ToolbarItem {
-                    Button(action: addWorkout) {
-                        Label("Add new workout", systemImage:"plus")
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showExerciseList = true
+                    }) {
+                        Label("add new workout", systemImage: "plus")
                     }
                 }
+            }
+            .sheet(isPresented: $showExerciseList) {
+                ExerciseList()
             }
         }
     }
@@ -36,10 +42,10 @@ struct StartPage: View {
     func addWorkout() {
         guard newWorkoutName.isEmpty == false else { return }
         
-        withAnimation {
-            let workout = Workout(name: newWorkoutName, exercises: [])
-            workoutArray.append(workout)
-            newWorkoutName = ""
+            withAnimation {
+                let workout = Workout(name: newWorkoutName, exercises: [])
+                workoutArray.append(workout)
+                newWorkoutName = ""
         }
     }
     
