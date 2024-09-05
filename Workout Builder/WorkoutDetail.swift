@@ -12,11 +12,18 @@ struct WorkoutDetail: View {
     var workout: Workout
     
     var body: some View {
-        ForEach(workout.exercises) { exercise in
+        ForEach(workout.exercises, id: \.name) { exercise in
             VStack {
-                Text(exercise.name)
-                Text("\(exercise.sets)")
-                Text("\(exercise.repetitions)")
+                HStack {
+                    Text(exercise.name)
+                    Spacer()
+                    HStack {
+                        Text("\(exercise.sets) sets")
+                        Text("\(exercise.repetitions) reps")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                }
+                .padding(.vertical, 4)
             }
         }
     }

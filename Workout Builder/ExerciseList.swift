@@ -16,11 +16,17 @@ struct ExerciseList: View {
     @State private var newWorkoutName = ""
     @State private var selectedExercise: Set<Exercise> = []
     
+    private var saveIsDisabled: Bool {
+        newWorkoutName.isEmpty || selectedExercise.isEmpty
+    }
+    
     var body: some View {
         List {
             HStack {
                 TextField("Workout Name", text: $newWorkoutName)
                 Button("Save", action: addWorkout)
+                    .opacity(saveIsDisabled ? 0.5 : 1)
+                    .disabled(saveIsDisabled)
             }
             ForEach(exerciseData.categories, id: \.name) { cat in
                 Section(cat.name) {

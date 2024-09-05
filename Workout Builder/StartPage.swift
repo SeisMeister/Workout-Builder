@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct StartPage: View {
+    @Environment(\.modelContext) private var modelContext
     @State private var showExerciseList = false
     @Query private var workoutArray: [Workout] = []
     
@@ -23,8 +24,8 @@ struct StartPage: View {
                             } label: {
                                 Text(workout.name)
                             }
-
                         }
+                        .onDelete(perform: delete)
                     }
                 }
             }
@@ -42,6 +43,16 @@ struct StartPage: View {
                 ExerciseList()
             }
         }
+    }
+}
+
+extension StartPage {
+    func delete(at offsets: IndexSet) {
+        for index in offsets {
+            let workoutToDelete = workoutArray[index]
+            modelContext.delete(workoutToDelete)
+        }
+        try? modelContext.save()
     }
 }
 
