@@ -9,7 +9,6 @@ import SwiftUI
 
 struct StartPage: View {
     @State private var showExerciseList = false
-    @State private var newWorkoutName = ""
     @State private var workoutArray: [Workout] = []
     
     var body: some View {
@@ -34,30 +33,8 @@ struct StartPage: View {
                 }
             }
             .sheet(isPresented: $showExerciseList) {
-                ExerciseList()
+                ExerciseList(workoutArray: $workoutArray)
             }
-        }
-    }
-    
-    func addWorkout() {
-        guard newWorkoutName.isEmpty == false else { return }
-        
-            withAnimation {
-                let workout = Workout(name: newWorkoutName, exercises: [])
-                workoutArray.append(workout)
-                newWorkoutName = ""
-        }
-    }
-    
-    func addExercises(to workout: inout Workout) {
-        guard newWorkoutName.isEmpty == false else { return }
-        let set = 0
-        let rep = 0
-        
-        withAnimation {
-            let exercise = Exercise(name: newWorkoutName, sets: set, repetitions: rep)
-            workout.exercises.append(exercise)
-            newWorkoutName = ""
         }
     }
 }
