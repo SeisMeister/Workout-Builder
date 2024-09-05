@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct StartPage: View {
     @State private var showExerciseList = false
-    @State private var workoutArray: [Workout] = []
+    @Query private var workoutArray: [Workout] = []
     
     var body: some View {
         NavigationStack {
@@ -17,7 +18,12 @@ struct StartPage: View {
                 if !workoutArray.isEmpty {
                     Section("Workouts") {
                         ForEach(workoutArray, id: \.name) { workout in
+                            NavigationLink {
+                                WorkoutDetail(workout: workout)
+                            } label: {
                                 Text(workout.name)
+                            }
+
                         }
                     }
                 }
@@ -33,7 +39,7 @@ struct StartPage: View {
                 }
             }
             .sheet(isPresented: $showExerciseList) {
-                ExerciseList(workoutArray: $workoutArray)
+                ExerciseList()
             }
         }
     }

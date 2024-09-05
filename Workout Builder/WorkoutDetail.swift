@@ -6,7 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
-struct WorkoutDetail {
+struct WorkoutDetail: View {
+    var workout: Workout
     
+    var body: some View {
+        ForEach(workout.exercises) { exercise in
+            VStack {
+                Text(exercise.name)
+                Text("\(exercise.sets)")
+                Text("\(exercise.repetitions)")
+            }
+        }
+    }
 }
+

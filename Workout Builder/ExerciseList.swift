@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ExerciseList: View {
     @EnvironmentObject var exerciseData: ExerciseData
+    @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
-    @Binding var workoutArray: [Workout]
+    @Query var workoutArray: [Workout]
     @State private var newWorkoutName = ""
     @State private var selectedExercise: Set<Exercise> = []
     
@@ -54,8 +56,12 @@ struct ExerciseList: View {
         guard !newWorkoutName.isEmpty else { return }
         
             withAnimation {
-                let workout = Workout(name: newWorkoutName, exercises: Array(selectedExercise))
-                workoutArray.append(workout)
+                print(Array(selectedExercise))
+                var workout = Workout(name: newWorkoutName)
+                workout.exercises = Array(selectedExercise)
+                modelContext.insert(workout)
+                print(workout.name)
+                print(workout.exercises.count)
                 newWorkoutName = ""
                 selectedExercise.removeAll()
                 dismiss()
@@ -63,6 +69,6 @@ struct ExerciseList: View {
     }
 }
 #Preview {
-    ExerciseList(workoutArray: .constant([]))
+    ExerciseList()
         .environmentObject(ExerciseData())
 }

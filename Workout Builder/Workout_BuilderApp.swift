@@ -10,10 +10,11 @@ import SwiftData
 
 @main
 struct Workout_BuilderApp: App {
-    var sharedModelContainer: ModelContainer = {
+   static var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
-            Workout.self
+            Workout.self,
+            Exercise.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -32,5 +33,7 @@ struct Workout_BuilderApp: App {
 //            ExerciseList()
         }
         .environmentObject(exerciseData)
+//        .modelContainer(Self.sharedModelContainer)
+        .modelContainer(for: Workout.self)
    }
 }
