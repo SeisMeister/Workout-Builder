@@ -51,7 +51,7 @@ struct ExerciseList: View {
     }
     
     func addWorkout() {
-        guard !newWorkoutName.isEmpty == false else { return }
+        guard !newWorkoutName.isEmpty else { return }
         
             withAnimation {
                 let workout = Workout(name: newWorkoutName, exercises: Array(selectedExercise))
@@ -66,6 +66,3 @@ struct ExerciseList: View {
     ExerciseList(workoutArray: .constant([]))
         .environmentObject(ExerciseData())
 }
-
-// Add save button at the top so user can save.
-// When workout is made then it is made into a copy
