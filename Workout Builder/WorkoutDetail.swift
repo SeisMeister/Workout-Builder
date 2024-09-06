@@ -12,20 +12,26 @@ struct WorkoutDetail: View {
     var workout: Workout
     
     var body: some View {
-        ForEach(workout.exercises, id: \.name) { exercise in
-            VStack {
+        List {
+            ForEach(workout.exercises, id: \.name) { exercise in
                 HStack {
-                    Text(exercise.name)
-                    Spacer()
-                    HStack {
-                        Text("\(exercise.sets) sets")
-                        Text("\(exercise.repetitions) reps")
+                    VStack(alignment: .leading) {
+                        Text(exercise.name)
+                            .font(.headline)
+                        HStack {
+                            Text("\(exercise.sets) sets, \(exercise.repetitions) reps")
+                                .font(.subheadline)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(15)
+                    .shadow(radius: 2)
+                    .padding(.vertical, 5)
                 }
-                .padding(.vertical, 4)
             }
+            .listStyle(PlainListStyle())
         }
     }
 }
-
