@@ -20,3 +20,6 @@ import SwiftData
     }
 }
 
+// Ignore initial sample data
+// Get it so the user can
+// Get app working from swiftData not the sample data

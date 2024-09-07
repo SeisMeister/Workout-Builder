@@ -4,23 +4,25 @@
 //
 //  Created by Cesar Fernandez on 8/21/24.
 //
+// Rename views to have view at the end of the signature of the struct.
 
 import SwiftUI
 import SwiftData
 
-struct StartPage: View {
+struct StartPageView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var showExerciseList = false
+    @State private var showWorkoutPreview = false
     @Query private var workoutArray: [Workout] = []
     
     var body: some View {
         NavigationStack {
             List {
                 if !workoutArray.isEmpty {
-                    Section("Workouts") {
+                    Section {
                         ForEach(workoutArray, id: \.name) { workout in
                             NavigationLink {
-                                WorkoutDetail(workout: workout)
+                                WorkoutDetailView(workout: workout)
                             } label: {
                                 Text(workout.name)
                             }
@@ -32,21 +34,16 @@ struct StartPage: View {
             .navigationTitle("Workouts")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showExerciseList = true
-                    }) {
-                        Label("add new workout", systemImage: "plus")
+                    NavigationLink(destination: ExerciseListView()) {
+                        Label("Add new workout", systemImage: "plus")
                     }
                 }
-            }
-            .sheet(isPresented: $showExerciseList) {
-                ExerciseList()
             }
         }
     }
 }
 
-extension StartPage {
+extension StartPageView {
     func delete(at offsets: IndexSet) {
         for index in offsets {
             let workoutToDelete = workoutArray[index]
@@ -57,5 +54,5 @@ extension StartPage {
 }
 
 #Preview {
-    StartPage()
+    StartPageView()
 }

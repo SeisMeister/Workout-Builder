@@ -7,26 +7,6 @@
 
 import Foundation
 
-//@Model
-//class ExcerciseData {
-//    @Relationship var categories: [ExcerciseCategory]? = []
-//}
-//
-//class LoadInitialDataIntoSwiftData {
-//    init() {
-//        //if data has not been loaded (query to see if initial data exists) {
-//        // loadInitialData()
-//        //}
-//        
-//    }
-//    
-//    func loadInitialData() {
-//        
-//    }
-//    
-//}
-
-
 struct ExerciseCategory: Codable {
     let name: String
     let exercises: [String]
@@ -56,3 +36,4 @@ class ExerciseData: ObservableObject {
     }
 }
 
+//
