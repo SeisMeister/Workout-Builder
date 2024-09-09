@@ -30,7 +30,7 @@ struct Workout_BuilderApp: App {
     var body: some Scene {
         WindowGroup {
             StartPageView()
-//            ExerciseListView()
+//            CreateWorkoutView()
         }
         .environmentObject(exerciseData)
 //        .modelContainer(Self.sharedModelContainer)

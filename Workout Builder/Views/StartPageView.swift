@@ -34,7 +34,7 @@ struct StartPageView: View {
             .navigationTitle("Workouts")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: ExerciseListView()) {
+                    NavigationLink(destination: CreateWorkoutView()) {
                         Label("Add new workout", systemImage: "plus")
                     }
                 }

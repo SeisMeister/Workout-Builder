@@ -46,6 +46,3 @@ struct StartWorkoutView: View {
     }
 }
 
-//#Preview {
-//    StartWorkoutView(workout: Workout(name: "Sample Workout", exercises: [Exercise(name: "Squat", sets: 3, repetitions: 10)]))
-//}

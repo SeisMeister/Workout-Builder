@@ -8,12 +8,13 @@
 import SwiftUI
 import SwiftData
 
-struct ExerciseListView: View {
+struct CreateWorkoutView: View {
     @EnvironmentObject var exerciseData: ExerciseData
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @Query var workoutArray: [Workout]
     @State private var newWorkoutName = ""
+    @State private var searchExercise = ""
     @State private var customExerciseName = ""
     @State private var selectedExercise: Set<Exercise> = []
     @State private var expandedSections: Set<String> = []
@@ -34,18 +35,28 @@ struct ExerciseListView: View {
     }
     
     var body: some View {
-        List {
             HStack {
                 TextField("Workout Name", text: $newWorkoutName)
+                    .contentShape(Rectangle())
+                    .contentShape(.rect(cornerRadius: 10))
                 Button("Save", action: addWorkout)
                     .opacity(saveIsDisabled ? 0.5 : 1)
                     .disabled(saveIsDisabled)
             }
-            // For my confusing following block of code:
-            // This iterates through each exercise category
-            ForEach(exerciseData.categories, id: \.name) { cat in
-                // This part here shows or hides its contents based on the 'expandedSections' set
-                DisclosureGroup(isExpanded: Binding(
+            .padding()
+            .background(Color.white)
+            .cornerRadius(15)
+            .shadow(radius: 10)
+            .padding(.vertical, 0)
+            List {
+                HStack {
+                    TextField("Search Exercise", text: $searchExercise)
+                }
+                // For my confusing following block of code:
+                // This iterates through each exercise category
+                ForEach(exerciseData.categories, id: \.name) { cat in
+                    // This part here shows or hides its contents based on the 'expandedSections' set
+                    DisclosureGroup(isExpanded: Binding(
                         get: { expandedSections.contains(cat.name) }, // This here checks if the category is expanded
                         set: { isExpanded in
                             if isExpanded {
@@ -54,31 +65,31 @@ struct ExerciseListView: View {
                                 expandedSections.remove(cat.name) // This here collapses (removing the category from the set)
                             }
                         }
-                )) {
-                    // This displays each exercise per category
-                    ForEach(cat.exercises, id: \.self) { exerciseName in
-                        HStack {
-                            Text(exerciseName) // This shows the name of the exercise
-                            Spacer()
-                            if selectedExercise.contains(where: { $0.name == exerciseName}) {
-                                Image(systemName: "checkmark")  // This part here shows a checkmark when selected
-                                    .foregroundColor(.blue)
+                    )) {
+                        // This displays each exercise per category
+                        ForEach(cat.exercises, id: \.self) { exerciseName in
+                            HStack {
+                                Text(exerciseName) // This shows the name of the exercise
+                                Spacer()
+                                if selectedExercise.contains(where: { $0.name == exerciseName}) {
+                                    Image(systemName: "checkmark")  // This part here shows a checkmark when selected
+                                        .foregroundColor(.blue)
+                                }
+                            }
+                            .contentShape(Rectangle())      // This here makes the entire row tappable to the user
+                            .onTapGesture {
+                                toggleExercisesSelection(name: exerciseName)    // this toggles selection when tapped
                             }
                         }
-                        .contentShape(Rectangle())      // This here makes the entire row tappable to the user
-                        .onTapGesture {
-                            toggleExercisesSelection(name: exerciseName)    // this toggles selection when tapped
-                        }
+                        // Following adds a custom exercise input for the category
+                        customExerciseView(for: cat.name)
+                    } label: {
+                        Text(cat.name)     // This part shows the category label
                     }
-                    // Following adds a custom exercise input for the category
-                    customExerciseView(for: cat.name)
-                } label: {
-                    Text(cat.name)     // This part shows the category label
                 }
             }
         }
-    }
-    
+        
     @ViewBuilder
     func customExerciseView(for category: String) -> some View {
         switch category {
@@ -139,6 +150,6 @@ struct ExerciseListView: View {
     }
 
     #Preview {
-        ExerciseListView()
+        CreateWorkoutView()
             .environmentObject(ExerciseData())
     }
