@@ -10,6 +10,9 @@ import SwiftData
 
 struct WorkoutDetailView: View {
     @State private var isShowingEditWorkoutView = false
+    @State private var exerciseToEdit: Exercise?
+    
+    let heights = stride(from: 0.35, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
     var workout: Workout
     
     
@@ -28,19 +31,16 @@ struct WorkoutDetailView: View {
                         Spacer()
                         
                         Button {
-                            print("Edit Workout")
+                            exerciseToEdit = exercise
                         } label: {
                             Text("Edit")
                         }
                         .buttonStyle(.borderless)
                     }
-//                    .sheet(isPresented: $isShowingEditWorkoutView) {
-//                        EditWorkoutView()
-//                    }
                     .padding()
                     .background(Color.white)
                     .cornerRadius(15)
-                    .shadow(radius: 2)
+                    .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 10)
                     .padding(.vertical, 5)
                 }
                 .listStyle(PlainListStyle())
@@ -53,6 +53,14 @@ struct WorkoutDetailView: View {
                     }
                 }
             }
+        }
+        .sheet(item: $exerciseToEdit) { exercise in
+            let binding = Binding(
+                get: { exercise },
+                set: { exerciseToEdit = $0 }
+            )
+            EditWorkoutView(exercise: binding)
+                .presentationDetents(Set(heights))
         }
     }
 }

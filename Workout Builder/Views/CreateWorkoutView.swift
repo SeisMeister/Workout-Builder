@@ -12,29 +12,26 @@ struct CreateWorkoutView: View {
     @EnvironmentObject var exerciseData: ExerciseData
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
-    @Query var workoutArray: [Workout]
-    @Query var exercises: [Exercise]
+//    @Query var workoutArray: [Workout]
+    @Query var exercises: [AvaliableExercise]
     @State private var newWorkoutName = ""
-    @State private var selectedExercise: Set<Exercise> = []
+    
+    @State private var selectedExercise: Set<AvaliableExercise> = []
     @State private var expandedSections: Set<String> = []
-    
-    @State private var isShowingEditWorkoutView = false
-    @State private var exerciseToEdit: Exercise?
-    
-    @State private var editSets = 0
-    @State private var editReps = 0
-
+        
     @State private var newSquat = ""
     @State private var newHinge = ""
     @State private var newPush = ""
     @State private var newPull = ""
     @State private var newCarry = ""
     @State private var newRotation = ""
-
+    
+    let heights = stride(from: 0.35, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
+    
     private var saveIsDisabled: Bool {
         newWorkoutName.isEmpty || selectedExercise.isEmpty
     }
-
+    
     var body: some View {
         VStack {
             HStack {
@@ -48,7 +45,7 @@ struct CreateWorkoutView: View {
                     .opacity(saveIsDisabled ? 0.5 : 1)
             }
             .padding()
-
+            
             List {
                 ForEach(exerciseData.categories, id: \.name) { category in
                     DisclosureGroup(isExpanded: Binding(
@@ -65,7 +62,7 @@ struct CreateWorkoutView: View {
                         let filteredExercises = exercises.filter {
                             $0.category == category
                         }
-
+                        
                         ForEach(filteredExercises, id: \.self) { exercise in
                             HStack {
                                 if selectedExercise.contains(exercise) {
@@ -83,26 +80,15 @@ struct CreateWorkoutView: View {
                                 }
                                 
                                 Spacer()
-                                
-                                if selectedExercise.contains(exercise) {
-                                    Button {
-                                        exerciseToEdit = exercise
-                                        isShowingEditWorkoutView = true
-                                    } label: {
-                                        Text("Edit")
-                                    }
-                                    .sheet(isPresented: $isShowingEditWorkoutView) {
-                                        EditWorkoutView()
-                                    }
-                                    .buttonStyle(.borderless)
-                                }
                             }
                             .contentShape(Rectangle())
                             .onTapGesture {
                                 toggleExerciseSelection(exercise: exercise)
                             }
                         }
-
+                        .onDelete { indexSet in
+                            deleteExercise(at: indexSet, from: filteredExercises)
+                        }
                         // Add custom exercise for the current category
                         customExerciseView(for: category)
                     } label: {
@@ -111,11 +97,8 @@ struct CreateWorkoutView: View {
                 }
             }
         }
-        .sheet(isPresented: $isShowingEditWorkoutView) {
-            EditWorkoutView()
-        }
     }
-
+    
     @ViewBuilder
     func customExerciseView(for category: ExerciseCategory) -> some View {
         HStack {
@@ -125,7 +108,7 @@ struct CreateWorkoutView: View {
             })
         }
     }
-
+    
     func customExerciseBinding(for category: ExerciseCategory) -> Binding<String> {
         switch category {
         case .squat: return $newSquat
@@ -136,33 +119,43 @@ struct CreateWorkoutView: View {
         case .rotation: return $newRotation
         }
     }
-
+    
     func addCustomExercise(text: String, category: ExerciseCategory) {
         guard !text.isEmpty else { return }
-
-        let customExercise = Exercise(name: text, sets: 3, repetitions: 10, category: category)
+        
+        let customExercise = AvaliableExercise(name: text, sets: 3, repetitions: 10, category: category)
         modelContext.insert(customExercise)
         customExerciseBinding(for: category).wrappedValue = ""
     }
-
-    func toggleExerciseSelection(exercise: Exercise) {
+    
+    func toggleExerciseSelection(exercise: AvaliableExercise) {
         if selectedExercise.contains(exercise) {
             selectedExercise.remove(exercise)
         } else {
             selectedExercise.insert(exercise)
         }
     }
-
+    
     func addWorkout() {
         guard !newWorkoutName.isEmpty else { return }
-
+        
         withAnimation {
             let workout = Workout(name: newWorkoutName)
-            workout.exercises = Array(selectedExercise)
+            workout.exercises = selectedExercise.map { Exercise(from: $0) }
             modelContext.insert(workout)
             newWorkoutName = ""
             selectedExercise.removeAll()
             dismiss()
+        }
+    }
+    
+    func deleteExercise(at offsets: IndexSet, from exercises: [AvaliableExercise]) {
+        for index in offsets {
+            let exerciseToDelete = exercises[index]
+            if let indexInSelected = selectedExercise.firstIndex(of: exerciseToDelete) {
+                selectedExercise.remove(at: indexInSelected)
+            }
+            modelContext.delete(exerciseToDelete)
         }
     }
 }

@@ -5,108 +5,108 @@
         "name": "Goblet Squat",
         "sets": 3,
         "repetitions": 10,
-        "category": "Squat"
+        "category": "squat"
     },
     {
         "name": "Box Squat",
         "sets": 3,
         "repetitions": 10,
-        "category": "Squat"
+        "category": "squat"
     },
     {
         "name": "Split Squat",
         "sets": 3,
         "repetitions": 10,
-        "category": "Squat"
+        "category": "squat"
     },
     {
         "name": "Deadlift",
         "sets": 3,
         "repetitions": 10,
-        "category": "Hinge"
+        "category": "hinge"
     },
     {
         "name": "Good-Morning",
         "sets": 3,
         "repetitions": 10,
-        "category": "Hinge"
+        "category": "hinge"
     },
     {
         "name": "Glute Bridge",
         "sets": 3,
         "repetitions": 10,
-        "category": "Hinge"
+        "category": "hinge"
     },
     {
         "name": "Benchpress",
         "sets": 3,
         "repetitions": 10,
-        "category": "Push"
+        "category": "push"
     },
     {
         "name": "Deficit Push-Ups",
         "sets": 3,
         "repetitions": 10,
-        "category": "Push"
+        "category": "push"
     },
     {
         "name": "Military Press",
         "sets": 3,
         "repetitions": 10,
-        "category": "Push"
+        "category": "push"
     },
     {
         "name": "Bent-Over Row",
         "sets": 3,
         "repetitions": 10,
-        "category": "Pull"
+        "category": "pull"
     },
     {
         "name": "Lat Pulldowns",
         "sets": 3,
         "repetitions": 10,
-        "category": "Pull"
+        "category": "pull"
     },
     {
         "name": "Bicep Curls",
         "sets": 3,
         "repetitions": 10,
-        "category": "Pull"
+        "category": "pull"
     },
     {
         "name": "Farmer's Carry",
         "sets": 3,
         "repetitions": 10,
-        "category": "Carry"
+        "category": "carry"
     },
     {
         "name": "Suitcase Carry",
         "sets": 3,
         "repetitions": 10,
-        "category": "Carry"
+        "category": "carry"
     },
     {
         "name": "Overhead Carry",
         "sets": 3,
         "repetitions": 10,
-        "category": "Carry"
+        "category": "carry"
     },
     {
         "name": "Cable Axe Chops",
         "sets": 3,
         "repetitions": 10,
-        "category": "Rotation"
+        "category": "rotation"
     },
     {
         "name": "Rotational Medicine Ball Throws",
         "sets": 3,
         "repetitions": 10,
-        "category": "Rotation"
+        "category": "rotation"
     },
     {
         "name": "Rotational LandMine Press",
         "sets": 3,
         "repetitions": 10,
-        "category": "Rotation"
+        "category": "rotation"
     }
 ]

@@ -20,4 +20,11 @@ import SwiftData
         self.repetitions = repetitions
         self.category = category
     }
+    
+    public init(from exercise: AvaliableExercise) {
+        self.name = exercise.name
+        self.sets = exercise.sets
+        self.repetitions = exercise.repetitions
+        self.category = exercise.category
+    }
 }
