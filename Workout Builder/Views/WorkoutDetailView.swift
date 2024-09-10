@@ -9,7 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct WorkoutDetailView: View {
+    @State private var isShowingEditWorkoutView = false
     var workout: Workout
+    
     
     var body: some View {
         NavigationStack {
@@ -19,18 +21,27 @@ struct WorkoutDetailView: View {
                         VStack(alignment: .leading) {
                             Text(exercise.name)
                                 .font(.headline)
-                            HStack {
-                                Text("\(exercise.sets) sets, \(exercise.repetitions) reps")
-                                    .font(.subheadline)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            Text("\(exercise.sets) sets, \(exercise.repetitions) reps")
+                                .font(.subheadline)
                         }
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(15)
-                        .shadow(radius: 2)
-                        .padding(.vertical, 5)
+                        
+                        Spacer()
+                        
+                        Button {
+                            print("Edit Workout")
+                        } label: {
+                            Text("Edit")
+                        }
+                        .buttonStyle(.borderless)
                     }
+//                    .sheet(isPresented: $isShowingEditWorkoutView) {
+//                        EditWorkoutView()
+//                    }
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(15)
+                    .shadow(radius: 2)
+                    .padding(.vertical, 5)
                 }
                 .listStyle(PlainListStyle())
             }

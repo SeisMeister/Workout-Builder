@@ -13,143 +13,161 @@ struct CreateWorkoutView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     @Query var workoutArray: [Workout]
+    @Query var exercises: [Exercise]
     @State private var newWorkoutName = ""
-    @State private var searchExercise = ""
-    @State private var customExerciseName = ""
     @State private var selectedExercise: Set<Exercise> = []
     @State private var expandedSections: Set<String> = []
     
+    @State private var isShowingEditWorkoutView = false
+    @State private var exerciseToEdit: Exercise?
+    
+    @State private var editSets = 0
+    @State private var editReps = 0
+
     @State private var newSquat = ""
     @State private var newHinge = ""
     @State private var newPush = ""
     @State private var newPull = ""
     @State private var newCarry = ""
     @State private var newRotation = ""
-    
+
     private var saveIsDisabled: Bool {
         newWorkoutName.isEmpty || selectedExercise.isEmpty
     }
-    
-    private var addIsDisabled: Bool {
-        customExerciseName.isEmpty
-    }
-    
+
     var body: some View {
+        VStack {
             HStack {
                 TextField("Workout Name", text: $newWorkoutName)
-                    .contentShape(Rectangle())
-                    .contentShape(.rect(cornerRadius: 10))
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(15)
+                    .shadow(radius: 10)
                 Button("Save", action: addWorkout)
-                    .opacity(saveIsDisabled ? 0.5 : 1)
                     .disabled(saveIsDisabled)
+                    .opacity(saveIsDisabled ? 0.5 : 1)
             }
             .padding()
-            .background(Color.white)
-            .cornerRadius(15)
-            .shadow(radius: 10)
-            .padding(.vertical, 0)
+
             List {
-                HStack {
-                    TextField("Search Exercise", text: $searchExercise)
-                }
-                // For my confusing following block of code:
-                // This iterates through each exercise category
-                ForEach(exerciseData.categories, id: \.name) { cat in
-                    // This part here shows or hides its contents based on the 'expandedSections' set
+                ForEach(exerciseData.categories, id: \.name) { category in
                     DisclosureGroup(isExpanded: Binding(
-                        get: { expandedSections.contains(cat.name) }, // This here checks if the category is expanded
+                        get: { expandedSections.contains(category.name) },
                         set: { isExpanded in
                             if isExpanded {
-                                expandedSections.insert(cat.name) // This expands (adding a category to the set)
+                                expandedSections.insert(category.name)
                             } else {
-                                expandedSections.remove(cat.name) // This here collapses (removing the category from the set)
+                                expandedSections.remove(category.name)
                             }
                         }
                     )) {
-                        // This displays each exercise per category
-                        ForEach(cat.exercises, id: \.self) { exerciseName in
+                        // Filter exercises based on the category
+                        let filteredExercises = exercises.filter {
+                            $0.category == category
+                        }
+
+                        ForEach(filteredExercises, id: \.self) { exercise in
                             HStack {
-                                Text(exerciseName) // This shows the name of the exercise
-                                Spacer()
-                                if selectedExercise.contains(where: { $0.name == exerciseName}) {
-                                    Image(systemName: "checkmark")  // This part here shows a checkmark when selected
+                                if selectedExercise.contains(exercise) {
+                                    Image(systemName: "checkmark.circle")
+                                        .foregroundColor(.blue)
+                                } else {
+                                    Image(systemName: "circle")
                                         .foregroundColor(.blue)
                                 }
+                                
+                                VStack(alignment: .leading){
+                                    Text(exercise.name)
+                                    Text("\(exercise.sets) sets, \(exercise.repetitions) reps")
+                                        .font(.subheadline)
+                                }
+                                
+                                Spacer()
+                                
+                                if selectedExercise.contains(exercise) {
+                                    Button {
+                                        exerciseToEdit = exercise
+                                        isShowingEditWorkoutView = true
+                                    } label: {
+                                        Text("Edit")
+                                    }
+                                    .sheet(isPresented: $isShowingEditWorkoutView) {
+                                        EditWorkoutView()
+                                    }
+                                    .buttonStyle(.borderless)
+                                }
                             }
-                            .contentShape(Rectangle())      // This here makes the entire row tappable to the user
+                            .contentShape(Rectangle())
                             .onTapGesture {
-                                toggleExercisesSelection(name: exerciseName)    // this toggles selection when tapped
+                                toggleExerciseSelection(exercise: exercise)
                             }
                         }
-                        // Following adds a custom exercise input for the category
-                        customExerciseView(for: cat.name)
+
+                        // Add custom exercise for the current category
+                        customExerciseView(for: category)
                     } label: {
-                        Text(cat.name)     // This part shows the category label
+                        Text(category.name)
                     }
                 }
             }
         }
-        
-    @ViewBuilder
-    func customExerciseView(for category: String) -> some View {
-        switch category {
-        case "Squat":
-            customExerciseViewTextField(text: $newSquat)
-        case "Hinge":
-            customExerciseViewTextField(text: $newHinge)
-        case "Push":
-            customExerciseViewTextField(text: $newPush)
-        case "Pull":
-            customExerciseViewTextField(text: $newPull)
-        case "Carry":
-            customExerciseViewTextField(text: $newCarry)
-        case "Rotation":
-            customExerciseViewTextField(text: $newRotation)
-        default:
-            EmptyView()
-        }
-    }
-    
-        func customExerciseViewTextField (text: Binding<String>) -> some View {
-            HStack {
-                TextField("Custom Exercise", text: text)
-                Button("Add", action: {addCustomExercise(text: text.wrappedValue)})
-//                    .opacity(addIsDisabled ? 0.5 : 1)
-//                    .disabled(addIsDisabled)
-            }
-        }
-        
-        func toggleExercisesSelection(name: String) {
-            if let existingExercise = selectedExercise.first(where: { $0.name == name }) {
-                selectedExercise.remove(existingExercise)
-            } else {
-                let newExercise = Exercise(name: name, sets: 3, repetitions: 10)
-                selectedExercise.insert(newExercise)
-            }
-        }
-        
-        func addWorkout() {
-            guard !newWorkoutName.isEmpty else { return }
-            
-            withAnimation {
-                let workout = Workout(name: newWorkoutName)
-                workout.exercises = Array(selectedExercise)
-                modelContext.insert(workout)
-                newWorkoutName = ""
-                selectedExercise.removeAll()
-                dismiss()
-            }
-        }
-        
-    func addCustomExercise(text: String) {
-            guard !text.isEmpty else { return }
-            
-            let customExercise = Exercise(name: customExerciseName, sets: 3, repetitions: 10)
-            modelContext.insert(customExercise)
+        .sheet(isPresented: $isShowingEditWorkoutView) {
+            EditWorkoutView()
         }
     }
 
-    #Preview {
-        CreateWorkoutView()
-            .environmentObject(ExerciseData())
+    @ViewBuilder
+    func customExerciseView(for category: ExerciseCategory) -> some View {
+        HStack {
+            TextField("Custom Exercise", text: customExerciseBinding(for: category))
+            Button("Add", action: {
+                addCustomExercise(text: customExerciseBinding(for: category).wrappedValue, category: category)
+            })
+        }
     }
+
+    func customExerciseBinding(for category: ExerciseCategory) -> Binding<String> {
+        switch category {
+        case .squat: return $newSquat
+        case .hinge: return $newHinge
+        case .push: return $newPush
+        case .pull: return $newPull
+        case .carry: return $newCarry
+        case .rotation: return $newRotation
+        }
+    }
+
+    func addCustomExercise(text: String, category: ExerciseCategory) {
+        guard !text.isEmpty else { return }
+
+        let customExercise = Exercise(name: text, sets: 3, repetitions: 10, category: category)
+        modelContext.insert(customExercise)
+        customExerciseBinding(for: category).wrappedValue = ""
+    }
+
+    func toggleExerciseSelection(exercise: Exercise) {
+        if selectedExercise.contains(exercise) {
+            selectedExercise.remove(exercise)
+        } else {
+            selectedExercise.insert(exercise)
+        }
+    }
+
+    func addWorkout() {
+        guard !newWorkoutName.isEmpty else { return }
+
+        withAnimation {
+            let workout = Workout(name: newWorkoutName)
+            workout.exercises = Array(selectedExercise)
+            modelContext.insert(workout)
+            newWorkoutName = ""
+            selectedExercise.removeAll()
+            dismiss()
+        }
+    }
+}
+
+#Preview {
+    CreateWorkoutView()
+        .environmentObject(ExerciseData())
+}

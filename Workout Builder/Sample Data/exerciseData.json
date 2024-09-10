@@ -2,32 +2,111 @@
 
 [
     {
-        "name":"Squat",
-        "exercises": ["Goblet Squat", "Box Squat", "Split Squat"]
+        "name": "Goblet Squat",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Squat"
     },
-    
     {
-        "name":"Hinge",
-        "exercises": ["Deadlift", "Good-Morning", "Glute Bridge"]
+        "name": "Box Squat",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Squat"
     },
-    
     {
-        "name":"Push",
-        "exercises": ["Benchpress", "Deficit Push-Ups", "Military Press"]
+        "name": "Split Squat",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Squat"
     },
-    
     {
-        "name":"Pull",
-        "exercises": ["Bent-Over Row", "Lat Pulldowns", "Bicep Curls"]
+        "name": "Deadlift",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Hinge"
     },
-    
     {
-        "name":"Carry",
-        "exercises": ["Farmer's Carry", "Suitcase Carry", "Overhead Carry"]
+        "name": "Good-Morning",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Hinge"
     },
-    
     {
-        "name":"Rotation",
-        "exercises": ["Cable Axe Chops", "Rotational Medicine Ball Throws", "Rotational LandMine Press"]
+        "name": "Glute Bridge",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Hinge"
     },
+    {
+        "name": "Benchpress",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Push"
+    },
+    {
+        "name": "Deficit Push-Ups",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Push"
+    },
+    {
+        "name": "Military Press",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Push"
+    },
+    {
+        "name": "Bent-Over Row",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Pull"
+    },
+    {
+        "name": "Lat Pulldowns",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Pull"
+    },
+    {
+        "name": "Bicep Curls",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Pull"
+    },
+    {
+        "name": "Farmer's Carry",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Carry"
+    },
+    {
+        "name": "Suitcase Carry",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Carry"
+    },
+    {
+        "name": "Overhead Carry",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Carry"
+    },
+    {
+        "name": "Cable Axe Chops",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Rotation"
+    },
+    {
+        "name": "Rotational Medicine Ball Throws",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Rotation"
+    },
+    {
+        "name": "Rotational LandMine Press",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "Rotation"
+    }
 ]

@@ -12,14 +12,12 @@ import SwiftData
     var name: String
     var sets: Int
     var repetitions: Int
+    var category: ExerciseCategory
     
-    public init(name: String, sets: Int, repetitions: Int) {
+    public init(name: String, sets: Int, repetitions: Int, category: ExerciseCategory) {
         self.name = name
         self.sets = sets
         self.repetitions = repetitions
+        self.category = category
     }
 }
-
-// Ignore initial sample data
-// Get it so the user can
-// Get app working from swiftData not the sample data
