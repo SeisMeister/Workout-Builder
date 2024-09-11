@@ -50,7 +50,8 @@ struct StartWorkoutView: View {
                             .padding()  // Adds padding inside the HStack
                             .background(Color.white)  // Sets background color for each set
                             .cornerRadius(15)  // Rounds the corners of the HStack background
-                            .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 10)  // Adding a spicy shadow for each cell in the HStack
+                            .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 10)  
+                            /// Adding a spicy shadow for each cell in the HStack
                             .padding(.vertical, 5)  // Adds vertical padding between sets
                         }
                     }

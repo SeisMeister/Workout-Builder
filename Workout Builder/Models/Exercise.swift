@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 
+// SwiftData class that 
 @Model public class Exercise {
     var name: String
     var sets: Int

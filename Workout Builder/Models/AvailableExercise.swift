@@ -30,8 +30,8 @@ import SwiftData
 }
 
 
-// Data transfer object,
-// Goes 
+/// Data transfer object. Helps to take data from the JSON file, pops into this DTO
+///  then we inject in the swiftData class.
 public struct AvailableExerciseDTO: Codable {
     var name: String
     var sets: Int

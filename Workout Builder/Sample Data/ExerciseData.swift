@@ -8,11 +8,7 @@
 import Foundation
 import SwiftData
 
-//struct ExerciseCategory: Codable {
-//    let name: String
-//    let exercises: [String]
-//}
-
+// Enum that helps categorize the exercise by the foundational movement patterns
 public enum ExerciseCategory: String, CaseIterable, Codable {
     case squat, hinge, push, pull, carry, rotation
     

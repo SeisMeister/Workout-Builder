@@ -21,13 +21,13 @@ struct StartPageView: View {
                 if !workoutArray.isEmpty {
                     Section {
                         ForEach(workoutArray, id: \.name) { workout in
-                            NavigationLink {
+                            NavigationLink { // Links to the WorkoutDetailView, gives the cell a little chevron
                                 WorkoutDetailView(workout: workout)
                             } label: {
                                 Text(workout.name)
                             }
                         }
-                        .onDelete(perform: delete)
+                        .onDelete(perform: delete) // This here lets the user swipe to delete
                     }
                 }
             }
@@ -35,6 +35,7 @@ struct StartPageView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: CreateWorkoutView()) {
+                        // Little plus button at the top of the screen that lets the user add a new workout object
                         Label("Add new workout", systemImage: "plus")
                     }
                 }
@@ -44,12 +45,12 @@ struct StartPageView: View {
 }
 
 extension StartPageView {
-    func delete(at offsets: IndexSet) {
+    func delete(at offsets: IndexSet) { // function to delete so we can pop into .onDelete
         for index in offsets {
             let workoutToDelete = workoutArray[index]
             modelContext.delete(workoutToDelete)
         }
-        try? modelContext.save()
+        try? modelContext.save() // Helps for persistence, so when we exit the app, the deleted object will remain deleted
     }
 }
 

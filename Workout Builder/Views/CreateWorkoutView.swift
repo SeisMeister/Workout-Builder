@@ -15,7 +15,7 @@ struct CreateWorkoutView: View {
     @Query var exercises: [AvailableExercise]
     @State private var newWorkoutName = ""
     
-    @State private var selectedExercise: Set<AvailableExercise> = []
+    @State private var selectedExercise: Set<AvailableExercise> = [] // binding that takes swiftData
     @State private var expandedSections: Set<String> = []
         
     @State private var newSquat = ""
@@ -29,6 +29,7 @@ struct CreateWorkoutView: View {
     
     private var saveIsDisabled: Bool {
         newWorkoutName.isEmpty || selectedExercise.isEmpty
+        /// If the newWorkoutName textfield is empty or if no exercise has been toggled then this returns a bool, either true or false.
     }
     
     var body: some View {
@@ -40,17 +41,21 @@ struct CreateWorkoutView: View {
                     .cornerRadius(15)
                     .shadow(radius: 10)
                 Button("Save", action: addWorkout)
-                    .disabled(saveIsDisabled)
-                    .opacity(saveIsDisabled ? 0.5 : 1)
+                    .disabled(saveIsDisabled) // Disables the save button
+                    .opacity(saveIsDisabled ? 0.5 : 1) // if false opacity is 50%, if true opacity is 100%
             }
             .padding()
             
             List {
+                // Loops thorugh exercise categories
                 ForEach(exerciseData.categories, id: \.name) { category in
-                    // This lil' chunk down here lets the user expand a category and drop it down showing the exercises
+                    /// This lil' chunk down here lets the user expand a category and drop it down showing the exercises
                     DisclosureGroup(isExpanded: Binding(
+                        // Following is a custom binding's body.
                         get: { expandedSections.contains(category.name) },
+                        // Called to return expanded category's current name
                         set: { isExpanded in
+                            // Called to update the new exercise in the category
                             if isExpanded {
                                 expandedSections.insert(category.name)
                             } else {
@@ -102,6 +107,7 @@ struct CreateWorkoutView: View {
     }
     
     // this bottom function gives the user the ability to create an exercise
+    // ViewBuilder helps to return views
     @ViewBuilder
     func customExerciseView(for category: ExerciseCategory) -> some View {
         HStack {
@@ -112,6 +118,7 @@ struct CreateWorkoutView: View {
         }
     }
     
+    // enum that helps us decipher which category to pop our custom exercise
     func customExerciseBinding(for category: ExerciseCategory) -> Binding<String> {
         switch category {
         case .squat: return $newSquat
@@ -147,6 +154,7 @@ struct CreateWorkoutView: View {
         guard !newWorkoutName.isEmpty else { return }
         
         withAnimation {
+            // inspired by hacking with swift, I don't think the withAnimation does anything visually
             let workout = Workout(name: newWorkoutName)
             workout.exercises = selectedExercise.map { Exercise(from: $0) }
             modelContext.insert(workout)
@@ -157,6 +165,7 @@ struct CreateWorkoutView: View {
     }
     
     func deleteExercise(at offsets: IndexSet, from exercises: [AvailableExercise]) {
+        // delete func so user can delete added exercises in the dropdowns
         for index in offsets {
             let exerciseToDelete = exercises[index]
             if let indexInSelected = selectedExercise.firstIndex(of: exerciseToDelete) {
