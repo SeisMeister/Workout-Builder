@@ -2,6 +2,12 @@
 
 [
     {
+        "name": "Barbell Back Squat",
+        "sets": 3,
+        "repetitions": 10,
+        "category": "squat"
+    },
+    {
         "name": "Goblet Squat",
         "sets": 3,
         "repetitions": 10,
@@ -9,12 +15,6 @@
     },
     {
         "name": "Box Squat",
-        "sets": 3,
-        "repetitions": 10,
-        "category": "squat"
-    },
-    {
-        "name": "Split Squat",
         "sets": 3,
         "repetitions": 10,
         "category": "squat"

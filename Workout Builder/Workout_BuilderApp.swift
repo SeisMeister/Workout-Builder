@@ -17,9 +17,8 @@ struct Workout_BuilderApp: App {
         let schema = Schema([
             Workout.self,
             Exercise.self,
-            AvaliableExercise.self
+            AvailableExercise.self
         ])
-       // Possibly google how to add an enum to a model object
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
@@ -29,7 +28,7 @@ struct Workout_BuilderApp: App {
                 let dtos = loadCategoriesFromFile()
                 
                 for dto in dtos {
-                    container.mainContext.insert(AvaliableExercise(dto: dto))
+                    container.mainContext.insert(AvailableExercise(dto: dto))
                 }
                 
                 didLoadData = true
@@ -41,7 +40,7 @@ struct Workout_BuilderApp: App {
         }
     }()
     
-    static func loadCategoriesFromFile() -> [AvaliableExerciseDTO] {
+    static func loadCategoriesFromFile() -> [AvailableExerciseDTO] {
         guard let url = Bundle.main.url(forResource: "exerciseData", withExtension: "json") else {
             print("File not found.")
             return []
@@ -50,7 +49,7 @@ struct Workout_BuilderApp: App {
         do {
             let data = try Data(contentsOf: url)
             let decoder = JSONDecoder()
-            return try decoder.decode([AvaliableExerciseDTO].self, from: data)
+            return try decoder.decode([AvailableExerciseDTO].self, from: data)
         } catch {
             print("Error decoding JSON: \(error)")
             return []

@@ -35,7 +35,7 @@ struct WorkoutDetailView: View {
                         } label: {
                             Text("Edit")
                         }
-                        .buttonStyle(.borderless)
+                        .buttonStyle(.borderless) // this lets the user tap on the edit button, even if the whole cell was tappable
                     }
                     .padding()
                     .background(Color.white)

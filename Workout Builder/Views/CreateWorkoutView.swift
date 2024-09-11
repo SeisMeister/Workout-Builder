@@ -12,11 +12,10 @@ struct CreateWorkoutView: View {
     @EnvironmentObject var exerciseData: ExerciseData
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
-//    @Query var workoutArray: [Workout]
-    @Query var exercises: [AvaliableExercise]
+    @Query var exercises: [AvailableExercise]
     @State private var newWorkoutName = ""
     
-    @State private var selectedExercise: Set<AvaliableExercise> = []
+    @State private var selectedExercise: Set<AvailableExercise> = []
     @State private var expandedSections: Set<String> = []
         
     @State private var newSquat = ""
@@ -26,7 +25,7 @@ struct CreateWorkoutView: View {
     @State private var newCarry = ""
     @State private var newRotation = ""
     
-    let heights = stride(from: 0.35, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
+    let heights = stride(from: 0.35, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) } // Setting a custom height for the edit reps and sets sheet
     
     private var saveIsDisabled: Bool {
         newWorkoutName.isEmpty || selectedExercise.isEmpty
@@ -48,6 +47,7 @@ struct CreateWorkoutView: View {
             
             List {
                 ForEach(exerciseData.categories, id: \.name) { category in
+                    // This lil' chunk down here lets the user expand a category and drop it down showing the exercises
                     DisclosureGroup(isExpanded: Binding(
                         get: { expandedSections.contains(category.name) },
                         set: { isExpanded in
@@ -63,6 +63,7 @@ struct CreateWorkoutView: View {
                             $0.category == category
                         }
                         
+                        // loops through the exercises and has a little circle that can be checkmarked
                         ForEach(filteredExercises, id: \.self) { exercise in
                             HStack {
                                 if selectedExercise.contains(exercise) {
@@ -73,6 +74,7 @@ struct CreateWorkoutView: View {
                                         .foregroundColor(.blue)
                                 }
                                 
+                                // This part here displays the default sets and reps below the exercise
                                 VStack(alignment: .leading){
                                     Text(exercise.name)
                                     Text("\(exercise.sets) sets, \(exercise.repetitions) reps")
@@ -83,13 +85,13 @@ struct CreateWorkoutView: View {
                             }
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                toggleExerciseSelection(exercise: exercise)
+                                toggleExerciseSelection(exercise: exercise) // toggling is executed in the view here
                             }
                         }
+                        // Lets the user swipe to delete an exercise if wanted. Need to guard against letting user swipe to delete sample data.
                         .onDelete { indexSet in
                             deleteExercise(at: indexSet, from: filteredExercises)
                         }
-                        // Add custom exercise for the current category
                         customExerciseView(for: category)
                     } label: {
                         Text(category.name)
@@ -99,6 +101,7 @@ struct CreateWorkoutView: View {
         }
     }
     
+    // this bottom function gives the user the ability to create an exercise
     @ViewBuilder
     func customExerciseView(for category: ExerciseCategory) -> some View {
         HStack {
@@ -120,15 +123,19 @@ struct CreateWorkoutView: View {
         }
     }
     
+    // this guy adds the custom exercise
     func addCustomExercise(text: String, category: ExerciseCategory) {
         guard !text.isEmpty else { return }
         
-        let customExercise = AvaliableExercise(name: text, sets: 3, repetitions: 10, category: category)
+        // Saves it to a different data structure here, that way were not corrupting the OG data, the original exercise class.
+        // Next step would be to find a way to display more set info, like resistance/weight adjustment for RT
+        let customExercise = AvailableExercise(name: text, sets: 3, repetitions: 10, category: category)
         modelContext.insert(customExercise)
         customExerciseBinding(for: category).wrappedValue = ""
     }
     
-    func toggleExerciseSelection(exercise: AvaliableExercise) {
+    // Bottom function lets the user pick the exercise that they want
+    func toggleExerciseSelection(exercise: AvailableExercise) {
         if selectedExercise.contains(exercise) {
             selectedExercise.remove(exercise)
         } else {
@@ -149,7 +156,7 @@ struct CreateWorkoutView: View {
         }
     }
     
-    func deleteExercise(at offsets: IndexSet, from exercises: [AvaliableExercise]) {
+    func deleteExercise(at offsets: IndexSet, from exercises: [AvailableExercise]) {
         for index in offsets {
             let exerciseToDelete = exercises[index]
             if let indexInSelected = selectedExercise.firstIndex(of: exerciseToDelete) {

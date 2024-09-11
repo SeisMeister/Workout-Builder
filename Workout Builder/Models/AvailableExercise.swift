@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-@Model public class AvaliableExercise {
+@Model public class AvailableExercise {
     var name: String
     var sets: Int
     var repetitions: Int
@@ -21,7 +21,7 @@ import SwiftData
         self.category = category
     }
     
-    public init(dto: AvaliableExerciseDTO) {
+    public init(dto: AvailableExerciseDTO) {
         self.name = dto.name
         self.sets = dto.sets
         self.repetitions = dto.repetitions
@@ -32,7 +32,7 @@ import SwiftData
 
 // Data transfer object,
 // Goes 
-public struct AvaliableExerciseDTO: Codable {
+public struct AvailableExerciseDTO: Codable {
     var name: String
     var sets: Int
     var repetitions: Int

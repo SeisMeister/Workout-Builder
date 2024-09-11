@@ -21,7 +21,7 @@ import SwiftData
         self.category = category
     }
     
-    public init(from exercise: AvaliableExercise) {
+    public init(from exercise: AvailableExercise) {
         self.name = exercise.name
         self.sets = exercise.sets
         self.repetitions = exercise.repetitions
